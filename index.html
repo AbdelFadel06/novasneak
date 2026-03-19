@@ -2355,185 +2355,243 @@
     .ss-nav-link:hover, .ss-nav-link.ss-active { color: var(--ink); background: var(--off); }
 
     /* ══ HERO ══ */
+    /* ══ SS HERO FULLSCREEN ══ */
     .ss-hero {
       margin-top: var(--total-h);
       min-height: calc(100svh - var(--total-h));
-      background: #f7f6f4;
       position: relative;
       overflow: hidden;
       display: flex;
-      align-items: center;
+      align-items: stretch;
     }
 
+    /* Background slides */
+    .ss-hfs-bg {
+      position: absolute;
+      inset: 0; z-index: 0;
+    }
+
+    .ss-hfs-slide {
+      position: absolute; inset: 0;
+      opacity: 0;
+      transition: opacity 0.9s ease;
+    }
+
+    .ss-hfs-slide.active { opacity: 1; }
+
+    .ss-hfs-slide img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      transform: scale(1.06);
+      transition: transform 6s ease;
+    }
+
+    .ss-hfs-slide.active img { transform: scale(1); }
+
+    /* Overlay — dégradé gauche vers droite, violet subtil */
+    .ss-hfs-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background:
+        linear-gradient(to right, rgba(245,244,242,0.92) 0%, rgba(245,244,242,0.6) 40%, rgba(245,244,242,0.12) 65%, transparent 100%),
+        linear-gradient(to top, rgba(245,244,242,0.25) 0%, transparent 40%);
+    }
+
+    /* Content */
     .ss-hero-content {
-      width: 100%;
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 4rem 3rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: 4rem;
+      position: relative; z-index: 2;
+      max-width: 620px;
+      padding: 3.5rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1rem;
     }
 
     .ss-eyebrow {
-      display: inline-block;
-      font-size: 0.72rem;
-      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.68rem;
+      font-weight: 800;
       letter-spacing: 3px;
       text-transform: uppercase;
       color: var(--ss-purple);
-      margin-bottom: 1.2rem;
     }
 
     .ss-hero-title {
       font-family: 'Inter', sans-serif;
-      font-size: clamp(3.5rem, 7vw, 7rem);
+      font-size: clamp(3.2rem, 7vw, 7.5rem);
       font-weight: 900;
-      line-height: 0.92;
+      line-height: 0.9;
       color: #0e0e0e;
-      margin-bottom: 1.5rem;
+      margin: 0;
       letter-spacing: -2px;
     }
 
     .ss-hero-title em {
       font-style: normal;
       color: var(--ss-purple);
+      display: block;
     }
 
-    .ss-hero-sub {
-      font-size: 0.95rem;
-      font-weight: 400;
-      color: #666;
-      line-height: 1.7;
-      max-width: 420px;
-      margin-bottom: 1.8rem;
-    }
-
-    .ss-hero-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 2rem; }
-
-    .ss-pill {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      padding: 6px 14px;
+    /* Type tag (dynamique) */
+    .ss-type-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(109,40,217,0.15);
       border-radius: 100px;
-      background: #fff;
-      border: 1.5px solid rgba(0,0,0,0.12);
-      color: #444;
+      padding: 4px 14px 4px 8px;
     }
 
-    .ss-hero-actions { display: flex; gap: 12px; align-items: center; }
-
-    .ss-btn-primary {
-      font-family: var(--fb);
-      font-size: 0.85rem;
-      font-weight: 700;
-      background: #0e0e0e;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 0.9rem 2rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .ss-btn-primary:hover { background: var(--ss-purple); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(109,40,217,0.3); }
-
-    .ss-btn-outline {
-      font-family: var(--fb);
-      font-size: 0.85rem;
-      font-weight: 700;
-      background: transparent;
-      color: #0e0e0e;
-      border: 1.5px solid rgba(0,0,0,0.2);
-      border-radius: 10px;
-      padding: calc(0.9rem - 1.5px) 1.8rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .ss-btn-outline:hover { background: #0e0e0e; color: #fff; }
-
-    /* Hero visual */
-    .ss-hero-visual { position: relative; display: flex; align-items: center; justify-content: center; min-height: 460px; }
-
-    .ss-hero-circle {
-      position: absolute;
-      width: 380px; height: 380px;
+    .ss-type-dot {
+      width: 8px; height: 8px;
       border-radius: 50%;
-      background: #ebebea;
-      border: 1px solid rgba(0,0,0,0.07);
+      background: var(--ss-purple);
+      flex-shrink: 0;
     }
 
-    .ss-hero-emoji {
-      position: relative; z-index: 2;
-      width: min(360px, 90%);
-      height: min(360px, 90%);
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 20px 56px rgba(0,0,0,0.14);
-      animation: floatShoe 5s ease-in-out infinite;
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      background: #ebebea;
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    .ss-hero-carousel-dots {
-      position: absolute;
-      bottom: 0; left: 50%;
-      transform: translateX(-50%);
-      display: flex; gap: 6px; z-index: 3;
-    }
-
-    .ss-hero-card {
-      position: absolute;
-      bottom: 40px; left: -10px;
-      background: #fff;
-      border: 1px solid rgba(0,0,0,0.09);
-      border-radius: 12px;
-      padding: 0.9rem 1.2rem;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-      display: flex; flex-direction: column; gap: 3px;
-      z-index: 4;
-      min-width: 160px;
-    }
-
-    .ss-hcard-tag {
-      font-size: 0.62rem;
-      font-weight: 700;
+    #ssTypeName {
+      font-family: var(--fb);
+      font-size: 0.72rem;
+      font-weight: 800;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--ss-purple);
+      transition: opacity 0.25s ease;
     }
 
-    .ss-hcard-name {
+    .ss-hero-sub {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: #555;
+      line-height: 1.65;
+      max-width: 400px;
+    }
+
+    /* Product pill */
+    .ss-hero-pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 12px;
+      padding: 0.7rem 1rem;
+      max-width: 400px;
+      gap: 1rem;
+    }
+
+    .ss-pill-left { display: flex; flex-direction: column; gap: 2px; }
+
+    .ss-pill-name {
       font-family: 'Inter', sans-serif;
       font-size: 0.95rem;
       font-weight: 700;
       color: #0e0e0e;
+      transition: opacity 0.3s ease;
     }
 
-    .ss-hcard-price {
+    .ss-pill-price {
       font-family: var(--fd);
-      font-size: 1.3rem;
-      color: #0e0e0e;
+      font-size: 1.1rem;
+      color: var(--ss-purple);
+      letter-spacing: 0.5px;
+      transition: opacity 0.3s ease;
     }
 
-    .ss-hero-prev, .ss-hero-next {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      width: 40px; height: 40px;
+    .ss-pill-right {
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .ss-pill-dots { display: flex; gap: 5px; align-items: center; }
+
+    .ss-pill-dot {
+      width: 6px; height: 6px;
       border-radius: 50%;
-      background: #fff; border: 1px solid rgba(0,0,0,0.15);
-      font-size: 0.95rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      z-index: 10; transition: all 0.2s;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      background: rgba(0,0,0,0.18);
+      cursor: pointer;
+      transition: all 0.25s;
     }
 
-    .ss-hero-prev { left: 1.5rem; }
-    .ss-hero-next { right: 1.5rem; }
-    .ss-hero-prev:hover, .ss-hero-next:hover { background: #0e0e0e; color: #fff; }
+    .ss-pill-dot.active {
+      width: 18px;
+      border-radius: 100px;
+      background: var(--ss-purple);
+    }
+
+    .ss-pill-arrows { display: flex; gap: 4px; }
+
+    .ss-pill-arrow {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: #0e0e0e;
+      color: white; border: none;
+      font-size: 0.8rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .ss-pill-arrow:hover { background: var(--ss-purple); }
+
+    .ss-hero-actions { display: flex; gap: 12px; align-items: center; }
+
+    .ss-btn-primary {
+      font-family: var(--fb); font-size: 0.82rem; font-weight: 800;
+      letter-spacing: 0.5px; text-transform: uppercase;
+      background: var(--ss-purple); color: #fff; border: none;
+      border-radius: 8px; padding: 0.85rem 1.8rem;
+      cursor: pointer; transition: all 0.2s;
+    }
+
+    .ss-btn-primary:hover { background: #5b21b6; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(109,40,217,0.35); }
+
+    .ss-btn-outline {
+      font-family: var(--fb); font-size: 0.82rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      background: rgba(255,255,255,0.72); backdrop-filter: blur(8px);
+      color: #0e0e0e; border: 1.5px solid rgba(0,0,0,0.16);
+      border-radius: 8px; padding: calc(0.85rem - 1.5px) 1.6rem;
+      cursor: pointer; transition: all 0.2s;
+    }
+
+    .ss-btn-outline:hover { background: #0e0e0e; color: #fff; }
+
+    .ss-hero-badges { display: flex; gap: 7px; flex-wrap: wrap; }
+
+    .ss-hero-badge {
+      font-size: 0.68rem; font-weight: 600;
+      padding: 4px 11px; border-radius: 100px;
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(109,40,217,0.12);
+      color: #555;
+    }
+
+    /* Progress bar */
+    .ss-hfs-progress {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px; background: rgba(0,0,0,0.07); z-index: 3;
+    }
+
+    .ss-hfs-bar {
+      height: 100%; background: var(--ss-purple);
+      width: 0%; transition: width linear;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .ss-hero-content { padding: 2rem 1.5rem; max-width: 100%; gap: 0.8rem; }
+      .ss-hero-title { font-size: clamp(2.8rem, 12vw, 4.2rem); }
+      .ss-hfs-overlay { background: linear-gradient(to bottom, rgba(245,244,242,0.5) 0%, rgba(245,244,242,0.9) 55%, rgba(245,244,242,0.97) 100%); }
+      .ss-hero-badges { display: none; }
+    }
 
     /* ══ FEATURE BAND ══ */
     .ss-feature-band {
@@ -2729,9 +2787,7 @@
 
     /* ══ RESPONSIVE ══ */
     @media (max-width: 900px) {
-      .ss-hero-content { grid-template-columns: 1fr; gap: 2rem; }
-      .ss-hero-visual { min-height: 300px; }
-      .ss-hero-circle { width: 260px; height: 260px; }
+      /* SS hero responsive handled in .ss-hero-content media query above */
       .ss-bs-grid { grid-template-columns: 1fr 1fr; }
       .ss-bs-card.ss-featured { grid-column: span 2; }
       .ss-section-head { flex-direction: column; }
@@ -2826,6 +2882,8 @@
       <!-- Content -->
       <div class="hfs-content">
 
+        <!-- Top label -->
+        <div class="hfs-eyebrow">✦ Collection 2025</div>
 
         <!-- Main title -->
         <h1 class="hfs-title">
@@ -2985,36 +3043,62 @@
 
     <!-- ══ HERO ══ -->
     <section class="ss-hero">
+      <!-- Background slides -->
+      <div class="ss-hfs-bg" id="ssHfsBg"></div>
+      <!-- Overlay -->
+      <div class="ss-hfs-overlay"></div>
+
+      <!-- Content -->
       <div class="ss-hero-content">
-        <div class="ss-hero-text">
-          <span class="ss-eyebrow">✦ SonicSounds — Audio Premium</span>
-          <h1 class="ss-hero-title">Ressentez<br>Chaque<br><em>Note.</em></h1>
-          <p class="ss-hero-sub">Des enceintes, casques et écouteurs qui transforment votre façon d'écouter. Un son pur, une basse profonde — livrés chez vous en 24h.</p>
-          <div class="ss-hero-pills">
-            <span class="ss-pill">Son cristallin</span>
-            <span class="ss-pill">Basse profonde</span>
-            <span class="ss-pill">Livraison 24h</span>
+        <span class="ss-eyebrow">✦ SonicSounds — Audio Premium</span>
+
+        <h1 class="ss-hero-title">
+          Ressentez<br>Chaque<br><em>Note.</em>
+        </h1>
+
+        <!-- Type tag dynamique -->
+        <div class="ss-type-tag">
+          <span class="ss-type-dot"></span>
+          <span id="ssTypeName">Hoofer</span>
+        </div>
+
+        <p class="ss-hero-sub">
+          Hoofers, Earbuds et Casques qui transforment votre façon d'écouter.
+          Un son pur, des basses profondes — livrés chez vous en 24h.
+        </p>
+
+        <!-- Product pill -->
+        <div class="ss-hero-pill">
+          <div class="ss-pill-left">
+            <span class="ss-pill-name" id="ssHeroName">JBL Charge 5</span>
+            <span class="ss-pill-price" id="ssHeroPrice">45 000 FCFA</span>
           </div>
-          <div class="ss-hero-actions">
-            <button class="ss-btn-primary" onclick="ssScrollTo('ss-catalogue')">Découvrir →</button>
-            <button class="ss-btn-outline" onclick="ssScrollTo('ss-bestsellers')">Top ventes</button>
+          <div class="ss-pill-right">
+            <div class="ss-pill-dots" id="ssHeroDots"></div>
+            <div class="ss-pill-arrows">
+              <button class="ss-pill-arrow" onclick="ssPrev()">←</button>
+              <button class="ss-pill-arrow" onclick="ssNext()">→</button>
+            </div>
           </div>
         </div>
-        <div class="ss-hero-visual">
-          <div class="ss-hero-img-wrap">
-            <div class="ss-hero-circle"></div>
-            <div class="ss-hero-emoji" id="ssHeroEmoji">🔊</div>
-            <div class="ss-hero-carousel-dots" id="ssHeroDots"></div>
-          </div>
-          <div class="ss-hero-card" id="ssHeroCard">
-            <span class="ss-hcard-tag">Bestseller</span>
-            <span class="ss-hcard-name" id="ssHeroName">JBL Charge 5</span>
-            <span class="ss-hcard-price" id="ssHeroPrice">45 000 FCFA</span>
-          </div>
+
+        <!-- CTAs -->
+        <div class="ss-hero-actions">
+          <button class="ss-btn-primary" onclick="ssScrollTo('ss-catalogue')">Découvrir →</button>
+          <button class="ss-btn-outline" onclick="ssScrollTo('ss-bestsellers')">Top ventes</button>
+        </div>
+
+        <!-- Badges -->
+        <div class="ss-hero-badges">
+          <span class="ss-hero-badge">🎵 Son 360°</span>
+          <span class="ss-hero-badge">🔋 24h autonomie</span>
+          <span class="ss-hero-badge">💧 IPX7</span>
+          <span class="ss-hero-badge">⚡ Livraison 24h</span>
         </div>
       </div>
-      <button class="ss-hero-prev" onclick="ssPrev()">←</button>
-      <button class="ss-hero-next" onclick="ssNext()">→</button>
+
+      <!-- Progress bar -->
+      <div class="ss-hfs-progress"><div class="ss-hfs-bar" id="ssHfsBar"></div></div>
     </section>
 
     <!-- ══ FEATURE BAND ══ -->
@@ -3870,45 +3954,64 @@
     let ssSortVal    = 'default';
 
     /* ── Carousel ── */
+    const SS_SLIDE_DURATION = 5000;
+
     function ssBuildCarousel() {
-      const dotsEl  = document.getElementById('ssHeroDots');
-      const emojiEl = document.getElementById('ssHeroEmoji');
-      if (!dotsEl) return;
-      // Set first image immediately
-      if (emojiEl) {
-        emojiEl.innerHTML = `<img src="${ssSlides[0].image}" alt="${ssSlides[0].name}" style="width:100%;height:100%;object-fit:cover" loading="eager">`;
-      }
+      const bg     = document.getElementById('ssHfsBg');
+      const dotsEl = document.getElementById('ssHeroDots');
+      if (!bg) return;
+
       ssSlides.forEach((s, i) => {
-        const d = document.createElement('div');
-        d.className = 'slide-dot' + (i === 0 ? ' active' : '');
-        d.onclick = () => ssGoTo(i);
-        dotsEl.appendChild(d);
+        const div = document.createElement('div');
+        div.className = 'ss-hfs-slide' + (i === 0 ? ' active' : '');
+        div.innerHTML = `<img src="${s.image}" alt="${s.name}" loading="${i < 2 ? 'eager' : 'lazy'}">`;
+        bg.appendChild(div);
+
+        if (dotsEl) {
+          const d = document.createElement('div');
+          d.className = 'ss-pill-dot' + (i === 0 ? ' active' : '');
+          d.onclick = () => ssGoTo(i);
+          dotsEl.appendChild(d);
+        }
       });
+
       ssUpdateCarousel();
     }
 
     function ssUpdateCarousel() {
       const s = ssSlides[ssCurrent];
-      const emojiEl = document.getElementById('ssHeroEmoji');
+
+      /* swap slides */
+      document.querySelectorAll('.ss-hfs-slide').forEach((el, i) => el.classList.toggle('active', i === ssCurrent));
+
+      /* update text avec fade */
       const nameEl  = document.getElementById('ssHeroName');
       const priceEl = document.getElementById('ssHeroPrice');
-      if (emojiEl) {
-        emojiEl.style.opacity = '0'; emojiEl.style.transform = 'scale(0.92)';
-        setTimeout(() => {
-          emojiEl.innerHTML = `<img src="${s.image}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover;border-radius:16px" loading="lazy">`;
-          emojiEl.style.opacity = '1'; emojiEl.style.transform = 'scale(1)';
-        }, 220);
+      const typeEl  = document.getElementById('ssTypeName');
+      if (nameEl)  { nameEl.style.opacity  = '0'; setTimeout(() => { nameEl.textContent  = s.name;         nameEl.style.opacity  = '1'; }, 280); }
+      if (priceEl) { priceEl.style.opacity = '0'; setTimeout(() => { priceEl.textContent = s.price + ' FCFA'; priceEl.style.opacity = '1'; }, 320); }
+      if (typeEl)  { typeEl.style.opacity  = '0'; setTimeout(() => { typeEl.textContent  = s.type;         typeEl.style.opacity  = '1'; }, 240); }
+
+      /* dots */
+      document.querySelectorAll('.ss-pill-dot').forEach((d, i) => d.classList.toggle('active', i === ssCurrent));
+
+      /* progress bar */
+      const bar = document.getElementById('ssHfsBar');
+      if (bar) {
+        bar.style.transition = 'none';
+        bar.style.width = '0%';
+        requestAnimationFrame(() => {
+          bar.style.transition = `width ${SS_SLIDE_DURATION}ms linear`;
+          bar.style.width = '100%';
+        });
       }
-      if (nameEl)  nameEl.textContent  = s.name;
-      if (priceEl) priceEl.textContent = s.price + ' FCFA';
-      document.querySelectorAll('#ssHeroDots .slide-dot').forEach((d,i) => d.classList.toggle('active', i === ssCurrent));
     }
 
     function ssGoTo(n) {
       ssCurrent = (n + ssSlides.length) % ssSlides.length;
       ssUpdateCarousel();
       clearInterval(ssAutoTimer);
-      ssAutoTimer = setInterval(() => ssGoTo(ssCurrent + 1), 4500);
+      ssAutoTimer = setInterval(() => ssGoTo(ssCurrent + 1), SS_SLIDE_DURATION);
     }
 
     function ssNext() { ssGoTo(ssCurrent + 1); }
@@ -4106,7 +4209,7 @@
       ssRenderBestsellers();
       ssRenderCatalogue();
       ssRenderNouveautes();
-      ssAutoTimer = setInterval(() => ssGoTo(ssCurrent + 1), 4500);
+      ssAutoTimer = setInterval(() => ssGoTo(ssCurrent + 1), SS_SLIDE_DURATION);
     }
 
     /* Hook into store switcher */
